@@ -1,0 +1,29 @@
+---
+name : "ashutosh"
+age : 26
+
+skills :
+  - aws
+  - terraform
+  - ansible
+  - docker
+  - k8
+
+languages : 
+  - python
+  - c
+
+# list
+
+address :
+  street : "asdada0"
+  gully : "Sadsad"
+
+  # basic playbook 
+
+hosts : dbserver
+remote_user : root
+
+tasks:
+  - name : " first task"
+  
