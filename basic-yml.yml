@@ -1,29 +1,48 @@
----
-name : "ashutosh"
-age : 26
+- name: Verify apache installation
+  hosts: webservers
+  vars:
+    http_port: 80
+    max_clients: 200
+  remote_user: root
+  tasks:
+    - name: Ensure apache is at the latest version
+      ansible.builtin.yum:
+        name: httpd
+        state: latest
 
-skills :
-  - aws
-  - terraform
-  - ansible
-  - docker
-  - k8
+    - name: Write the apache config file
+      ansible.builtin.template:
+        src: /srv/httpd.j2
+        dest: /etc/httpd.conf
+      notify:
+        - Restart apache
 
-languages : 
-  - python
-  - c
+    - name: Ensure apache is running
+      ansible.builtin.service:
+        name: httpd
+        state: started
 
-# list
+  handlers:
+    - name: Restart apache
+      ansible.builtin.service:
+        name: httpd
+        state: restarted
 
-address :
-  street : "asdada0"
-  gully : "Sadsad"
 
-  # basic playbook 
+# tasks:
+#   - name: Restart everything
+#     command: echo "this task will restart the web services"
+#     notify: "restart web services"
 
-hosts : dbserver
-remote_user : root
+# handlers:
+#   - name: Restart memcached
+#     service:
+#       name: memcached
+#       state: restarted
+#     listen: "restart web services"
 
-tasks:
-  - name : " first task"
-  
+#   - name: Restart apache
+#     service:
+#       name: apache
+#       state: restarted
+#     listen: "restart web services"
